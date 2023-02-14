@@ -131,7 +131,11 @@ window.addEventListener('load', () => {
         context.restore();
         context.stroke();
       }
-    }// draw
+    }//draw
+
+    update () {
+
+    }//update
   }// class Obstacle
 
   class Egg {
@@ -191,11 +195,12 @@ window.addEventListener('load', () => {
       this.timer = 0;
       this.interval = 1000/this.fps;
       this.eggTimer = 0;
-      this.eggInterval = 500;
-      this.maxEggs = 10;
+      this.eggInterval = 10000;
+      this.maxEggs = 20;
       this.numberOfObstacles = 10;
       this.obstacles = [];
       this.eggs = [];
+      this.gameObjects = [];
       this.mouse = {
         x: this.width * 0.5,
         y: this.height * 0.5,
@@ -239,22 +244,23 @@ window.addEventListener('load', () => {
       if (this.timer > this.interval){
         // animate next frame
         context.clearRect(0, 0, this.width, this.height);
-        this.timer = 0;
-        this.obstacles.forEach(obstacle => obstacle.draw(context));
-        this.eggs.forEach(egg => {
-          egg.draw(context)
-          egg.update();
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player];
+        // sort by vertical position
+        this.gameObjects.sort((a, b) => {
+          return a.collisionY - b.collisionY;
         });
-        this.player.draw(context);
-        this.player.update();
+        // draw all elements in canvas
+        this.gameObjects.forEach(object => {
+          object.draw(context)
+          object.update();
+        });
+        this.timer = 0;
       }
       this.timer += deltaTime;
-
       //add eggs periodically
       if (this.eggTimer > this.eggInterval && this.eggs.length < this.maxEggs) {
         this.addEgg();
         this.eggTimer = 0;
-        console.log(this.eggs);
       } else {
         this.eggTimer += deltaTime;
       }
