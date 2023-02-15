@@ -7,6 +7,49 @@ window.addEventListener('load', () => {
   ctx.fillStyle = 'white';
   ctx.lineWidth = 3;
   ctx.strokeStyle = 'white';
+  ctx.font = '40px Helvetica';
+  ctx.textAlign = 'center';
+
+  class Larva {
+    constructor(game, x, y) {
+      this.game = game;
+      this.collisionX = x;
+      this.collisionY = y;
+      this.collisionRadius = 30;
+      this.image = document.getElementById('larva');
+      this.spriteWidth = 150;
+      this.spriteHeight = 150;
+      this.width = this.spriteWidth;
+      this.height = this.spriteHeight;
+      this.spriteX;
+      this.spriteY;
+      this.speedY = 1 + Math.random();
+    }
+
+    draw(context) {
+      context.drawImage(this.image, 0, 0, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height);
+      if (this.game.debug) {
+        context.beginPath();
+        context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2);
+        context.save();
+        context.globalAlpha = .5;
+        context.fill();
+        context.restore();
+        context.stroke();
+      }
+    }
+
+    update(){
+      this.collisionY -= this.speedY;
+      this.spriteX = this.collisionX - this.width * .5;
+      this.spriteY = this.collisionY - this.height * .5 - 50;
+      // move to safety
+      if (this.collisionY < this.game.topMargin) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      }
+    }
+  }//class larva
 
   class Player {
     constructor(game) {
@@ -21,9 +64,9 @@ window.addEventListener('load', () => {
       this.dy = 0;
       this.speedModifier = 3;
       this.spriteWidth = 255;
-      this.spriteHeigth = 256;
+      this.spriteHeight = 256;
       this.width = this.spriteWidth;
-      this.height = this.spriteHeigth;
+      this.height = this.spriteHeight;
       this.spriteX;
       this.spriteY;
       this.frameX = 0;
@@ -32,7 +75,7 @@ window.addEventListener('load', () => {
     } // constructor
 
     draw(context) {
-      context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeigth, this.spriteWidth, this.spriteHeigth, this.spriteX, this.spriteY, this.width,this.height);
+      context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width,this.height);
       if (this.game.debug) {
         context.beginPath();
         context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2);
@@ -111,9 +154,9 @@ window.addEventListener('load', () => {
       this.collisionRadius = 40;
       this.image = document.getElementById('obstacles');
       this.spriteWidth = 250;
-      this.spriteHeigth = 250;
+      this.spriteHeight = 250;
       this.width = this.spriteWidth;
-      this.height = this.spriteHeigth;
+      this.height = this.spriteHeight;
       this.spriteX = this.collisionX - this.width * .5;
       this.spriteY = this.collisionY - this.height * .5 - 70;
       this.frameX = Math.floor(Math.random() * 4);
@@ -121,7 +164,7 @@ window.addEventListener('load', () => {
     }// constructor
 
     draw (context) {
-      context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeigth, this.spriteWidth, this.spriteHeigth, this.spriteX, this.spriteY, this.width, this.height);
+      context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height);
       if (this.game.debug) {
         context.beginPath();
         context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2);
@@ -147,11 +190,14 @@ window.addEventListener('load', () => {
       this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin - this.margin));
       this.image = document.getElementById('egg');
       this.spriteWidth = 110;
-      this.spriteHeigth = 135;
+      this.spriteHeight = 135;
       this.width = this.spriteWidth;
-      this.height = this.spriteHeigth;
+      this.height = this.spriteHeight;
       this.spriteX;
       this.spriteY;
+      this.hatchTimer = 0;
+      this.hatchInterval = 5000;
+      this.markedForDeletion = false;
     }//constructor
 
     draw(context) {
@@ -164,10 +210,12 @@ window.addEventListener('load', () => {
         context.fill();
         context.restore();
         context.stroke();
+        const displayTimer = (this.hatchTimer * 0.001).toFixed(0);
+        context.fillText(displayTimer, this.collisionX, this.collisionY - this.collisionRadius * 2.5);
       }
     }//draw
 
-    update() {
+    update(deltaTime) {
       this.spriteX = this.collisionX - this.width * .5;
       this.spriteY = this.collisionY - this.height * .5 - 30;
       let collisionObjects = [this.game.player, ...this.game.obstacles, ...this.game.enemies];
@@ -180,6 +228,14 @@ window.addEventListener('load', () => {
           this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
+      //hatching
+      if (this.hatchTimer > this.hatchInterval) {
+        this.game.hatchlings.push(new Larva(this.game, this.collisionX, this.collisionY));
+        this.markedForDeletion = true; 
+        this.game.removeGameObjects();
+      } else {
+        this.hatchTimer += deltaTime;
+      }
     }//update
   }//class egg
 
@@ -190,9 +246,9 @@ window.addEventListener('load', () => {
       this.speedX = Math.random() * 3 + .5;
       this.image = document.getElementById('toad');
       this.spriteWidth = 140;
-      this.spriteHeigth = 260;
+      this.spriteHeight = 260;
       this.width = this.spriteWidth;
-      this.height = this.spriteHeigth;
+      this.height = this.spriteHeight;
       this.collisionX = this.game.width + this.width + Math.random() * this.game.width * .5;
       this.collisionY = this.game.topMargin + (Math.random() * (this.game.height - this.game.topMargin));
       this.spriteX;
@@ -251,6 +307,7 @@ window.addEventListener('load', () => {
       this.obstacles = [];
       this.eggs = [];
       this.enemies = [];
+      this.hatchlings = [];
       this.gameObjects = [];
       this.mouse = {
         x: this.width * 0.5,
@@ -295,7 +352,7 @@ window.addEventListener('load', () => {
       if (this.timer > this.interval){
         // animate next frame
         context.clearRect(0, 0, this.width, this.height);
-        this.gameObjects = [...this.eggs, ...this.obstacles, this.player, ...this.enemies];
+        this.gameObjects = [...this.eggs, ...this.obstacles, this.player, ...this.enemies, ...this.hatchlings];
         // sort by vertical position
         this.gameObjects.sort((a, b) => {
           return a.collisionY - b.collisionY;
@@ -303,7 +360,7 @@ window.addEventListener('load', () => {
         // draw all elements in canvas
         this.gameObjects.forEach(object => {
           object.draw(context)
-          object.update();
+          object.update(deltaTime);
         });
         this.timer = 0;
       }
@@ -331,6 +388,11 @@ window.addEventListener('load', () => {
 
     addEnemy() {
       this.enemies.push(new Enemy(this));
+    }
+
+    removeGameObjects() {
+      this.eggs = this.eggs.filter(object => !object.markedForDeletion);
+      this.hatchlings = this.hatchlings.filter(object => !object.markedForDeletion);
     }
 
     init () {
