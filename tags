@@ -9,26 +9,56 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	5.9.0	/80ee839/
+#bull	./style.css	/^#obstacles, #bull, #egg, #toad, #larva{$/;"	i
+#canvas1	./style.css	/^#canvas1 {$/;"	i
+#egg	./style.css	/^#obstacles, #bull, #egg, #toad, #larva{$/;"	i
+#larva	./style.css	/^#obstacles, #bull, #egg, #toad, #larva{$/;"	i
+#obstacles	./style.css	/^#obstacles, #bull, #egg, #toad, #larva{$/;"	i
+#overlay	./style.css	/^#overlay {$/;"	i
+#toad	./style.css	/^#obstacles, #bull, #egg, #toad, #larva{$/;"	i
+*	./style.css	/^* {$/;"	s
+Bullseye!!	./index.html	/^    <title>Bullseye!!<\/title>$/;"	j
 Egg	script.js	/^  class Egg {$/;"	c
+Enemy	script.js	/^  class Enemy {$/;"	c
 Game	script.js	/^  class Game {$/;"	c
+Larva	script.js	/^  class Larva {$/;"	c
 Obstacle	script.js	/^  class Obstacle { $/;"	c
 Player	script.js	/^  class Player {$/;"	c
+addEgg	script.js	/^    addEgg() {$/;"	m	class:Game
+addEnemy	script.js	/^    addEnemy() {$/;"	m	class:Game
 animate	script.js	/^  function animate(timeStamp) {$/;"	f
+bull	./index.html	/^    <img id="bull" src="bull.png">$/;"	I
 canvas	script.js	/^  const canvas = document.getElementById('canvas1');$/;"	C
+canvas1	./index.html	/^    <canvas id="canvas1"><\/canvas>$/;"	I
 checkCollision	script.js	/^    checkCollision(a, b) {$/;"	m	class:Game
 constructor	script.js	/^    constructor (game) {$/;"	m	class:Egg
 constructor	script.js	/^    constructor(canvas) {$/;"	m	class:Game
+constructor	script.js	/^    constructor(game) {$/;"	m	class:Enemy
 constructor	script.js	/^    constructor(game) {$/;"	m	class:Obstacle
 constructor	script.js	/^    constructor(game) {$/;"	m	class:Player
+constructor	script.js	/^    constructor(game, x, y) {$/;"	m	class:Larva
 ctx	script.js	/^  const ctx = canvas.getContext('2d');$/;"	C
 draw	script.js	/^    draw (context) {$/;"	m	class:Obstacle
+draw	script.js	/^    draw(context) {$/;"	m	class:Egg
+draw	script.js	/^    draw(context) {$/;"	m	class:Enemy
+draw	script.js	/^    draw(context) {$/;"	m	class:Larva
 draw	script.js	/^    draw(context) {$/;"	m	class:Player
+egg	./index.html	/^    <img id="egg" src="egg.png">$/;"	I
 game	script.js	/^  const game = new Game(canvas);$/;"	C
 init	script.js	/^    init () {$/;"	m	class:Game
+larva	./index.html	/^    <img id="larva" src="larva.png">$/;"	I
 lastTime	script.js	/^  let lastTime = 0;$/;"	v
 mouse	script.js	/^      this.mouse = {$/;"	c	class:Game.constructor
+obstacles	./index.html	/^    <img id="obstacles" src="obstacles.png">$/;"	I
+overlay	./index.html	/^    <img id="overlay" src="overlay.png">$/;"	I
 pressed	script.js	/^        pressed: false$/;"	p	class:Game.constructor.mouse
+removeGameObjects	script.js	/^    removeGameObjects() {$/;"	m	class:Game
 render	script.js	/^    render (context, deltaTime) {$/;"	m	class:Game
+toad	./index.html	/^    <img id="toad" src="toad.png">$/;"	I
+update	script.js	/^    update () {$/;"	m	class:Obstacle
+update	script.js	/^    update() {$/;"	m	class:Enemy
 update	script.js	/^    update() {$/;"	m	class:Player
+update	script.js	/^    update(){$/;"	m	class:Larva
+update	script.js	/^    update(deltaTime) {$/;"	m	class:Egg
 x	script.js	/^        x: this.width * 0.5,$/;"	p	class:Game.constructor.mouse
 y	script.js	/^        y: this.height * 0.5,$/;"	p	class:Game.constructor.mouse
