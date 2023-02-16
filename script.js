@@ -65,13 +65,16 @@ window.addEventListener('load', () => {
           this.collisionY = object.collisionY + (sumOfRadii + 1) * unit_y;
         }
       });
-      // collsion with enemies
+      // collision with enemies
       this.game.enemies.forEach(enemy => {
         if (this.game.checkCollision(this, enemy)[0]) {
           this.markedForDeletion = true;
           this.game.removeGameObjects();
           this.game.lostHatchlings++;
-        }
+          for (let i = 3; i > 0; i--) {
+            this.game.particles.push(new Spark(this.game, this.collisionX, this.collisionY, 'blue'));
+          }//for
+        }//if
       });
     }//update
   }//class larva
@@ -255,7 +258,7 @@ window.addEventListener('load', () => {
         }
       });
       //hatching
-      if (this.hatchTimer > this.hatchInterval) {
+      if (this.hatchTimer > this.hatchInterval || this.collisionY < this.game.topMargin) {
         this.game.hatchlings.push(new Larva(this.game, this.collisionX, this.collisionY));
         this.markedForDeletion = true; 
         this.game.removeGameObjects();
@@ -343,7 +346,7 @@ window.addEventListener('load', () => {
   class Firefly extends Particle {
     update () {
       this.angle += this.velocityAngle;
-      this.collisionX += this.speedX;
+      this.collisionX += Math.cos(this.angle) * this.speedX;
       this.collisionY -= this.speedY;
       if (this.collisionX < 0 - this.radius) {
         this.markedForDeletion = true;
@@ -354,7 +357,14 @@ window.addEventListener('load', () => {
 
   class Spark extends Particle {
     update () {
-
+      this.angle += this.velocityAngle * 0.5;
+      this.collisionX -= Math.cos(this.angle) * this.speedX;
+      this.collisionY -= Math.sin(this.angle) * this.speedY;
+      if (this.radius > 0.1) this.radius -= 0.05;
+      if (this.radius < 0.2) {
+        this.markedForDeletion = true;
+        this.game.removeGameObjects();
+      }
     }
   }
 
