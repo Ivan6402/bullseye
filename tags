@@ -20,10 +20,13 @@
 Bullseye!!	./index.html	/^    <title>Bullseye!!<\/title>$/;"	j
 Egg	script.js	/^  class Egg {$/;"	c
 Enemy	script.js	/^  class Enemy {$/;"	c
+Firefly	script.js	/^  class Firefly extends Particle {$/;"	c
 Game	script.js	/^  class Game {$/;"	c
 Larva	script.js	/^  class Larva {$/;"	c
 Obstacle	script.js	/^  class Obstacle { $/;"	c
+Particle	script.js	/^  class Particle {$/;"	c
 Player	script.js	/^  class Player {$/;"	c
+Spark	script.js	/^  class Spark extends Particle {$/;"	c
 addEgg	script.js	/^    addEgg() {$/;"	m	class:Game
 addEnemy	script.js	/^    addEnemy() {$/;"	m	class:Game
 animate	script.js	/^  function animate(timeStamp) {$/;"	f
@@ -37,8 +40,10 @@ constructor	script.js	/^    constructor(game) {$/;"	m	class:Enemy
 constructor	script.js	/^    constructor(game) {$/;"	m	class:Obstacle
 constructor	script.js	/^    constructor(game) {$/;"	m	class:Player
 constructor	script.js	/^    constructor(game, x, y) {$/;"	m	class:Larva
+constructor	script.js	/^    constructor(game, x, y, color) {$/;"	m	class:Particle
 ctx	script.js	/^  const ctx = canvas.getContext('2d');$/;"	C
 draw	script.js	/^    draw (context) {$/;"	m	class:Obstacle
+draw	script.js	/^    draw (context) {$/;"	m	class:Particle
 draw	script.js	/^    draw(context) {$/;"	m	class:Egg
 draw	script.js	/^    draw(context) {$/;"	m	class:Enemy
 draw	script.js	/^    draw(context) {$/;"	m	class:Larva
@@ -55,7 +60,9 @@ pressed	script.js	/^        pressed: false$/;"	p	class:Game.constructor.mouse
 removeGameObjects	script.js	/^    removeGameObjects() {$/;"	m	class:Game
 render	script.js	/^    render (context, deltaTime) {$/;"	m	class:Game
 toad	./index.html	/^    <img id="toad" src="toad.png">$/;"	I
+update	script.js	/^    update () {$/;"	m	class:Firefly
 update	script.js	/^    update () {$/;"	m	class:Obstacle
+update	script.js	/^    update () {$/;"	m	class:Spark
 update	script.js	/^    update() {$/;"	m	class:Enemy
 update	script.js	/^    update() {$/;"	m	class:Player
 update	script.js	/^    update(){$/;"	m	class:Larva
